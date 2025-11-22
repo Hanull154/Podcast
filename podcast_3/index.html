@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wake Up Your Creativity – Podcast with Phil Cook</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease-in-out infinite;
+            margin-bottom: 15px;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .sound-waves {
+            display: flex;
+            justify-content: center;
+            gap: 3px;
+            margin-bottom: 20px;
+        }
+
+        .wave {
+            width: 4px;
+            height: 30px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border-radius: 2px;
+            animation: wave-animation 1.5s ease-in-out infinite;
+        }
+
+        .wave:nth-child(2) { animation-delay: 0.1s; }
+        .wave:nth-child(3) { animation-delay: 0.2s; }
+        .wave:nth-child(4) { animation-delay: 0.3s; }
+        .wave:nth-child(5) { animation-delay: 0.4s; }
+
+        .podcast-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .speaker {
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: speakerAppear 0.8s ease-out forwards;
+        }
+
+        .speaker-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .speaker-header:hover {
+            transform: translateX(5px);
+        }
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            border: 3px solid;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .avatar:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .host .avatar {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-color: #667eea;
+        }
+
+        .phil .avatar {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            border-color: #f093fb;
+        }
+
+        .speaker-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .host .speaker-name {
+            color: #667eea;
+        }
+
+        .phil .speaker-name {
+            color: #f5576c;
+        }
+
+        .speaker-text {
+            padding: 20px;
+            border-radius: 20px;
+            margin-left: 65px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .host .speaker-text {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-left: 4px solid #667eea;
+        }
+
+        .phil .speaker-text {
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.1), rgba(245, 87, 108, 0.1));
+            border-left: 4px solid #f5576c;
+        }
+
+        .rule-box {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 25px;
+            border-radius: 20px;
+            margin: 20px 0;
+            border: 2px solid #ff9a8b;
+            position: relative;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: slideInRule 0.8s ease-out forwards;
+            box-shadow: 0 10px 30px rgba(255, 154, 139, 0.3);
+        }
+
+        .rule-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #d63031;
+        }
+
+        .rule-icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 15px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .rule-content {
+            color: #2d3436;
+            font-weight: 500;
+        }
+
+        .worry-stick-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 25px;
+            border-radius: 20px;
+            margin: 20px 0;
+            border: 2px solid #74b9ff;
+            text-align: center;
+            animation: gentlePulse 3s ease-in-out infinite;
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-shape {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .quote-highlight {
+            background: linear-gradient(120deg, #a8edea, #fed6e3);
+            padding: 15px 20px;
+            border-radius: 15px;
+            margin: 15px 0;
+            border-left: 5px solid #74b9ff;
+            font-style: italic;
+            animation: highlightPulse 2s ease-in-out infinite;
+        }
+
+        .play-button {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 20px auto;
+            display: block;
+        }
+
+        .play-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes wave-animation {
+            0%, 100% { height: 20px; }
+            50% { height: 40px; }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes speakerAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInRule {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-5px); }
+            60% { transform: translateY(-3px); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(120deg); }
+            66% { transform: translateY(10px) rotate(240deg); }
+        }
+
+        @keyframes gentlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        @keyframes highlightPulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(116, 185, 255, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(116, 185, 255, 0.6); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .podcast-content {
+                padding: 25px;
+            }
+            
+            .speaker-text {
+                margin-left: 0;
+                margin-top: 15px;
+            }
+            
+            .speaker-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .avatar {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
+
+        .intro-text {
+            background: linear-gradient(135deg, #e8f5e8, #f0f8ff);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 1px solid #a8d8a8;
+            font-style: italic;
+            color: #2c5530;
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements">
+        <svg class="floating-shape" style="top: 10%; left: 10%; width: 60px; height: 60px;">
+            <circle cx="30" cy="30" r="25" fill="#ff6b6b" opacity="0.1"/>
+        </svg>
+        <svg class="floating-shape" style="top: 20%; right: 15%; width: 40px; height: 40px;">
+            <polygon points="20,5 35,35 5,35" fill="#4ecdc4" opacity="0.1"/>
+        </svg>
+        <svg class="floating-shape" style="bottom: 20%; left: 20%; width: 50px; height: 50px;">
+            <rect x="10" y="10" width="30" height="30" rx="5" fill="#96ceb4" opacity="0.1"/>
+        </svg>
+        <svg class="floating-shape" style="bottom: 30%; right: 10%; width: 35px; height: 35px;">
+            <path d="M17.5,5 L30,30 L5,30 Z" fill="#f093fb" opacity="0.1"/>
+        </svg>
+    </div>
+
+    <div class="container">
+        <header class="header">
+            <h1 class="title">Wake Up Your Creativity</h1>
+            <p class="subtitle">Podcast with Phil Cook</p>
+            <div class="sound-waves">
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+                <div class="wave"></div>
+            </div>
+            <button class="play-button" onclick="togglePlayback()">
+                <span id="play-text">▶ Start Listening</span>
+            </button>
+        </header>
+
+        <div class="podcast-content">
+
+
+            <h2 style="text-align: center; color: #667eea; margin-bottom: 30px; font-size: 1.8rem;">
+                Podcast: "Wake Up Your Creativity – 4 Simple Keys"<br>
+                <small style="color: #999; font-size: 1rem;">(Guest: Phil Cook)</small>
+            </h2>
+
+            <div class="speaker host" style="animation-delay: 0.2s;">
+                <div class="speaker-header" onclick="animateAvatar(this)">
+                    <div class="avatar"></div>
+                    <h3 class="speaker-name">Host</h3>
+                </div>
+                <div class="speaker-text">
+                    Hello everyone, and welcome to our show! I'm so happy you're here with us today. We have a very special guest – Phil Cook. Phil is not only a musician and songwriter, but also one of the most creative people I've ever met. I think you're really going to enjoy this conversation. Welcome, Phil!
+                </div>
+            </div>
+
+            <div class="speaker phil" style="animation-delay: 0.4s;">
+                <div class="speaker-header" onclick="animateAvatar(this)">
+                    <div class="avatar"></div>
+                    <h3 class="speaker-name">Phil</h3>
+                </div>
+                <div class="speaker-text">
+                    Hey! Thanks so much for having me. I'm really excited to talk about creativity with you and your listeners.
+                </div>
+            </div>
+
+            <div class="speaker host" style="animation-delay: 0.6s;">
+                <div class="speaker-header" onclick="animateAvatar(this)">
+                    <div class="avatar"></div>
+                    <h3 class="speaker-name">Host</h3>
+                </div>
+                <div class="speaker-text">
+                    Phil, I love the way you talk about creativity. You say creativity is like "breathing out." That's such an interesting idea. Could you tell us what you mean by that?
+                </div>
+            </div>
+
+            <div class="speaker phil" style="animation-delay: 0.8s;">
+                <div class="speaker-header" onclick="animateAvatar(this)">
+                    <div class="avatar"></div>
+                    <h3 class="speaker-name">Phil</h3>
+                </div>
+                <div class="speaker-text">
+                    We breathe in all day – news, social media, stress, noise… everything comes in. Creativity is the moment we finally breathe out. It's letting what's inside you come out. It feels so good. Sometimes, after a long day, I sit down with my guitar or a notebook and I just let my ideas flow. That's my way of breathing out.
+                </div>
+            </div>
+
+            <div class="speaker host" style="animation-delay: 1.0s;">
+                <div class="speaker-header" onclick="animateAvatar(this)">
+                    <div class="avatar"></div>
+                    <h3 class="speaker-name">Host</h3>
+                </div>
+                <div class="speaker-text">
+                    That's a beautiful way to think about it, Phil. I think a lot of our listeners can relate to that feeling. You know, so many people, including myself sometimes, say "I'm not creative at all!" What would you say to someone who feels that way?
+                </div>
+            </div>
+
+            <div class="speaker phil" style="animation-delay: 1.2s;">
+                <div class="speaker-header" onclick="animateAvatar(this)">
+                    <div class="avatar"></div>
+                    <h3 class="speaker-name">Phil</h3>
+                </div>
+                <div class="speaker-text">
+                    That's not true. Look at your normal day:<br>
+                    - What song do you turn up loud in the car?<br>
+                    - What food do you order because you love exactly how it tastes?<br>
+                    - What color did you choose for your room or your clothes?<br>
+                    These little choices = you ARE creative. You just didn't call it creativity yet.<br>
+                    Even small decisions show your unique taste and style. I think creativity lives in those everyday moments.
+                </div>
+            </div>
+
+            <div class="speaker host" style="animation-delay: 1.4s;">
+                <div class="speaker-header" onclick="animateAvatar(this)">
+                    <div class="avatar"></div>
+                    <h3 class="speaker-name">Host</h3>
+                </div>
+                <div class="speaker-text">
+                    I love that answer. It really makes me see things differently. So, you have 4 simple rules to help people wake up their creativity. Let's talk about them! What's the first one?
+                </div>
+            </div>
+
+            <div class="speaker phil" style="animation-delay: 1.6s;">
+                <div class="speaker-header" onclick="animateAvatar(this)">
+                    <div class="avatar"></div>
+                    <h3 class="speaker-name">Phil</h3>
+                </div>
+                <div class="speaker-text">
+                    <div class="rule-box">
+                        <div class="rule-header">
+                            <svg class="rule-icon" viewBox="0 0 24 24" fill="#d63031">
+                                <path d="M12 2L13.09 8.26L20 9L13.09 9.74L12 16L10.91 9.74L4 9L10.91 8.26L12 2Z"/>
+                            </svg>
+                            Rule 1: Drop the heavy expectations.
+                        </div>
+                        <div class="rule-content">
+                            Stop thinking you have to be Picasso or get a million likes. Just be you. That's enough.<br>
+                            When I write music, I try not to worry if it's "good enough." I just enjoy the process.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="speaker host" style="animation-delay: 1.8s;">
+                <div class="speaker-header" onclick="animateAvatar(this)">
+                    <div class="avatar"></div>
+                    <h3 class="speaker-name">Host</h3>
+                </div>
+                <div class="speaker-text">
+                    I think that's such important advice. It's so easy to put too much pressure on ourselves. Okay, what's Rule 2?
+                </div>
+            </div>
+
+            <div class="speaker phil" style="animation-delay: 2.0s;">
+                <div class="speaker-header" onclick="animateAvatar(this)">
+                    <div class="avatar"></div>
+                    <h3 class="speaker-name">Phil</h3>
+                </div>
+                <div class="speaker-text">
+                    <div class="rule-box">
+                        <div class="rule-header">
+                            <svg class="rule-icon" viewBox="0 0 24 24" fill="#d63031">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                            </svg>
+                            Rule 2: Lower the stakes – make it less serious.
+                        </div>
+                        <div class="rule-content">
+                            Example: you paint your nails bright yellow, then suddenly think "What will people say?"<br>
+                            Tell yourself: "It's only nail polish! No big deal!"<br>
+                            The more scared you feel, the more personal (and good) it probably is.<br>
+                            Taking risks, even small ones, can help you discover new parts of yourself.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="speaker host" style="animation-delay: 2.2s;">
+                <div class="speaker-header" onclick="animateAvatar(this)">
+                    <div class="avatar"></div>
+                    <h3 class="speaker-name">Host</h3>
+                </div>
+                <div class="speaker-text">
+                    That reminds me of when I tried wearing bright green shoes for the first time! I felt nervous, but it was also really fun. Now, what about Rule 3?
+                </div>
+            </div>
+
+            <div class="speaker phil" style="animation-delay: 2.4s;">
+                <div class="speaker-header" onclick="animateAvatar(this)">
+                    <div class="avatar"></div>
+                    <h3 class="speaker-name">Phil</h3>
+                </div>
+                <div class="speaker-text">
+                    <div class="rule-box">
+                        <div class="rule-header">
+                            <svg class="rule-icon" viewBox="0 0 24 24" fill="#d63031">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg>
+                            Rule 3: Bring yourself to the work.
+                        </div>
+                        <div class="rule-content">
+                            I'm clumsy, so I always look at the ground when I walk. One day I noticed I only pick up rocks with stripes. Now my whole house is full of striped rocks!<br>
+                            My biggest problem (being clumsy) became my favorite creative thing.<br>
+                            It's funny how our little habits and quirks can lead to something special.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="speaker host" style="animation-delay: 2.6s;">
+                <div class="speaker-header" onclick="animateAvatar(this)">
+                    <div class="avatar"></div>
+                    <h3 class="speaker-name">Host</h3>
+                </div>
+                <div class="speaker-text">
+                    That's wonderful, Phil. I love how you turn something small about yourself into something creative and positive. Okay, are you ready to share Rule 4?
+                </div>
+            </div>
+
+            <div class="speaker phil" style="animation-delay: 2.8s;">
+                <div class="speaker-header" onclick="animateAvatar(this)">
+                    <div class="avatar"></div>
+                    <h3 class="speaker-name">Phil</h3>
+                </div>
+                <div class="speaker-text">
+                    <div class="rule-box">
+                        <div class="rule-header">
+                            <svg class="rule-icon" viewBox="0 0 24 24" fill="#d63031">
+                                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                            </svg>
+                            Rule 4: Find your safe place – your sanctuary.
+                        </div>
+                        <div class="rule-content">
+                            It can be:<br>
+                            - your car when your favorite song plays<br>
+                            - the shower<br>
+                            - the garden<br>
+                            - or just a small rock in your pocket<br>
+                            When you touch it, you remember: "I'm still me. Everything is okay."<br>
+                            Having a safe place helps you relax and open your mind to new ideas. Sometimes, I find inspiration in the quietest moments.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="speaker host" style="animation-delay: 3.0s;">
+                <div class="speaker-header" onclick="animateAvatar(this)">
+                    <div class="avatar"></div>
+                    <h3 class="speaker-name">Host</h3>
+                </div>
+                <div class="speaker-text">
+                    That's such good advice, especially for people who feel nervous or unsure. Phil, I know you also make something really special and beautiful with your hands… what are they called?
+                </div>
+            </div>
+
+            <div class="speaker phil" style="animation-delay: 3.2s;">
+                <div class="speaker-header" onclick="animateAvatar(this)">
+                    <div class="avatar"></div>
+                    <h3 class="speaker-name">Phil</h3>
+                </div>
+                <div class="speaker-text">
+                    I call them "worry sticks."<br>
+                    I take a piece of wood and slowly carve it with a knife while I think about someone I love. At the end there's a little place for your thumb to rub when you feel worried.<br>
+                    I never sell them. I only make them for very special people. I made one for you today.
+                    <div class="worry-stick-box">
+                        <svg width="60" height="20" style="margin: 10px;">
+                            <rect x="5" y="8" width="50" height="4" rx="2" fill="#8B4513"/>
+                            <ellipse cx="30" cy="10" rx="8" ry="3" fill="#D2691E"/>
+                        </svg>
+                        <p style="margin: 0; font-style: italic; color: #2d3436;">A worry stick crafted with love</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="speaker host" style="animation-delay: 3.4s;">
+                <div class="speaker-header" onclick="animateAvatar(this)">
+                    <div class="avatar"></div>
+                    <h3 class="speaker-name">Host</h3>
+                </div>
+                <div class="speaker-text">
+                    (emotional) Phil… I'm actually holding it now. It's so soft and smooth. It really feels like your hand. Thank you so, so much for this thoughtful gift.<br>
+                    Sometimes, a small gift like this means more than words can say.
+                </div>
+            </div>
+
+            <div class="speaker phil" style="animation-delay: 3.6s;">
+                <div class="speaker-header" onclick="animateAvatar(this)">
+                    <div class="avatar"></div>
+                    <h3 class="speaker-name">Phil</h3>
+                </div>
+                <div class="speaker-text">
+                    Keep it in your pocket. When you feel stressed, just rub it.<br>
+                    It's a tiny reminder that someone cares about you.
+                </div>
+            </div>
+
+            <div class="speaker host" style="animation-delay: 3.8s;">
+                <div class="speaker-header" onclick="animateAvatar(this)">
+                    <div class="avatar"></div>
+                    <h3 class="speaker-name">Host</h3>
+                </div>
+                <div class="speaker-text">
+                    That's really touching, Phil. Thank you. Before we finish, do you have any last words or advice for our listeners?
+                </div>
+            </div>
+
+            <div class="speaker phil" style="animation-delay: 4.0s;">
+                <div class="speaker-header" onclick="animateAvatar(this)">
+                    <div class="avatar"></div>
+                    <h3 class="speaker-name">Phil</h3>
+                </div>
+                <div class="speaker-text">
+                    <div class="quote-highlight">
+                        Remember: you belong to yourself. Nobody else is inside your body. Nobody else has your voice.<br>
+                        Talk to yourself like your best friend would.<br>
+                        And today, do one tiny thing you always wanted to do:<br>
+                        wear funny socks, sing loud, draw something…<br>
+                        Do it today!<br>
+                        Even if it feels silly, these small acts make life brighter.
+                    </div>
+                </div>
+            </div>
+
+            <div class="speaker host" style="animation-delay: 4.2s;">
+                <div class="speaker-header" onclick="animateAvatar(this)">
+                    <div class="avatar"></div>
+                    <h3 class="speaker-name">Host</h3>
+                </div>
+                <div class="speaker-text">
+                    Phil Cook, you just taught all of us how to breathe again. I love you, and I'm so grateful for your time and your kindness today.
+                </div>
+            </div>
+
+            <div class="speaker phil" style="animation-delay: 4.4s;">
+                <div class="speaker-header" onclick="animateAvatar(this)">
+                    <div class="avatar"></div>
+                    <h3 class="speaker-name">Phil</h3>
+                </div>
+                <div class="speaker-text">
+                    Love you too. Thank you for this space. I hope everyone listening feels a little more creative and a little more free.
+                </div>
+            </div>
+
+            <div class="speaker host" style="animation-delay: 4.6s;">
+                <div class="speaker-header" onclick="animateAvatar(this)">
+                    <div class="avatar"></div>
+                    <h3 class="speaker-name">Host</h3>
+                </div>
+                <div class="speaker-text">
+                    To everyone listening: friends, take a deep breath right now… and breathe out.<br>
+                    Go show a little piece of yourself to the world today.<br>
+                    I promise your life will feel brighter.<br>
+                    Thank you for joining us. See you in the next episode – take care!
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        let isPlaying = false;
+
+        function togglePlayback() {
+            const button = document.getElementById('play-text');
+            isPlaying = !isPlaying;
+            
+            if (isPlaying) {
+                button.textContent = '⏸ Pause Listening';
+                animateSoundWaves();
+            } else {
+                button.textContent = '▶ Start Listening';
+                stopSoundWaves();
+            }
+        }
+
+        function animateSoundWaves() {
+            const waves = document.querySelectorAll('.wave');
+            waves.forEach((wave, index) => {
+                wave.style.animationDuration = `${Math.random() * 0.5 + 0.8}s`;
+            });
+        }
+
+        function stopSoundWaves() {
+            const waves = document.querySelectorAll('.wave');
+            waves.forEach(wave => {
+                wave.style.animationDuration = '1.5s';
+            });
+        }
+
+        function animateAvatar(element) {
+            const avatar = element.querySelector('.avatar');
+            avatar.style.animation = 'bounce 0.6s ease-in-out';
+            
+            setTimeout(() => {
+                avatar.style.animation = '';
+            }, 600);
+            
+            // Add ripple effect
+            const ripple = document.createElement('div');
+            ripple.style.cssText = `
+                position: absolute;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.6);
+                transform: scale(0);
+                animation: ripple 0.6s linear;
+                width: 60px;
+                height: 60px;
+                left: -5px;
+                top: -5px;
+                pointer-events: none;
+            `;
+            
+            element.style.position = 'relative';
+            element.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        }
+
+        // Add ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(2);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.speaker').forEach(speaker => {
+            observer.observe(speaker);
+        });
+
+        // Add breathing animation to the background
+        setInterval(() => {
+            document.body.style.background = `linear-gradient(135deg, 
+                hsl(${Math.sin(Date.now() * 0.001) * 30 + 240}, 70%, 75%) 0%, 
+                hsl(${Math.cos(Date.now() * 0.0015) * 30 + 280}, 60%, 70%) 25%, 
+                hsl(${Math.sin(Date.now() * 0.002) * 30 + 320}, 65%, 80%) 50%, 
+                hsl(${Math.cos(Date.now() * 0.0008) * 30 + 360}, 70%, 75%) 75%, 
+                hsl(${Math.sin(Date.now() * 0.0012) * 30 + 200}, 60%, 80%) 100%)`;
+        }, 50);
+    </script>
+</body>
+</html>
